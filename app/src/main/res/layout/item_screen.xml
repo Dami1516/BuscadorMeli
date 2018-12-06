@@ -1,0 +1,165 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/pg_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tituloItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Titulo item"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPagerGallery"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tituloItem" />
+
+        <ProgressBar
+            android:id="@+id/pg_loading_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/viewPagerGallery"
+            app:layout_constraintLeft_toLeftOf="@id/viewPagerGallery"
+            app:layout_constraintRight_toRightOf="@id/viewPagerGallery"
+            app:layout_constraintTop_toTopOf="@id/viewPagerGallery" />
+
+        <TextView
+            android:id="@+id/cantImagenes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@android:drawable/screen_background_dark_transparent"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/viewPagerGallery"
+            app:layout_constraintLeft_toLeftOf="@id/viewPagerGallery" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/viewPagerGallery"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/idDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Características"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/viewPagerGallery"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/descripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/idDescripcion"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/descripcion"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/idGarantia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Garantía"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/descripcion"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/garantia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/idGarantia"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/garantia"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/precio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/garantia"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <Button
+            android:id="@+id/btn_comprar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
+            android:text="Comprar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/precio" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>
