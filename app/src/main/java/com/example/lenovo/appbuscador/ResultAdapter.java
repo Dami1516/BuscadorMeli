@@ -13,15 +13,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import extras.Objeto;
 
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolderResult> {
 
-    ArrayList<Objeto> listResult;
+    private ArrayList<Objeto> listResult;
     private final ClickListener listener;
 
     public ResultAdapter(ArrayList<Objeto> listResult, ClickListener listener) {
@@ -90,8 +92,11 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 bmp = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
+            } catch (MalformedURLException e) {
+                Log.e("ERROR URL", e.getMessage());
+                e.printStackTrace();
+            } catch (IOException e) {
+                Log.e("ERROR IO", e.getMessage());
                 e.printStackTrace();
             }
             return bmp;

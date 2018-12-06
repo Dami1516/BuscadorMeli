@@ -23,7 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 
 import extras.Objeto;
 
@@ -39,9 +41,26 @@ public class ItemScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_screen);
-        objeto = (Objeto) getIntent().getExtras().getSerializable("Item");
+        obtenerDatos(savedInstanceState);
+        setupUi();
+        getDatostoML();
+    }
+
+    private void obtenerDatos(Bundle bundle){
+        try {
+            objeto = (Objeto) getIntent().getExtras().getSerializable("Item");
+        }
+        catch (NullPointerException e){
+            Log.e("ERROR PARAM BUNDLE", e.toString());
+        }
+    }
+
+    private void setupUi(){
         TextView tituloItem = findViewById(R.id.tituloItem);
         tituloItem.setText(objeto.getTitle());
+    }
+
+    private void getDatostoML(){
 
         try {
             new ItemScreen.GetAsycTask(0).execute(new ItemScreen.Command() {
@@ -51,7 +70,7 @@ public class ItemScreen extends AppCompatActivity {
                 }
             });
         } catch (MeliException e) {
-            Log.e("RESPONSE MELI", e.toString());
+            Log.e("ERROR MELI", e.toString());
         }
         try {
             new ItemScreen.GetAsycTask(1).execute(new ItemScreen.Command() {
@@ -61,7 +80,7 @@ public class ItemScreen extends AppCompatActivity {
                 }
             });
         } catch (MeliException e) {
-            Log.e("RESPONSE MELI", e.toString());
+            Log.e("ERROR MELI", e.toString());
         }
     }
 
@@ -73,6 +92,7 @@ public class ItemScreen extends AppCompatActivity {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e("ERROR JSON", e.toString());
         }
         return tr;
     }
@@ -84,6 +104,7 @@ public class ItemScreen extends AppCompatActivity {
                 descripcionItem.setText(descripcion.getString("plain_text"));
             } catch (JSONException e) {//El JSON siempre es válido
                 e.printStackTrace();
+                Log.e("ERROR JSON", e.toString());
             }
         }
         else
@@ -124,6 +145,7 @@ public class ItemScreen extends AppCompatActivity {
                             uri = Uri.parse(detalle.getString("permalink"));
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Log.e("ERROR JSON", e.toString());
                         }
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
@@ -131,12 +153,13 @@ public class ItemScreen extends AppCompatActivity {
                 });
 
                 for (int i = 0; i < pictures.length(); i++) {
-                    ImageView img = (ImageView) findViewById(R.id.imageView);
+                    ImageView img = findViewById(R.id.imageView);
                     DownloadImageTask task = new DownloadImageTask(img, i);
                     task.execute(((JSONObject) pictures.get(i)).getString("url"));
                 }
             } catch (JSONException e) {//El JSON siempre es válido
                 e.printStackTrace();
+                Log.e("ERROR JSON", e.toString());
             }
         }
         else
@@ -162,8 +185,11 @@ public class ItemScreen extends AppCompatActivity {
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 bmp = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
+            } catch (MalformedURLException e) {
+                Log.e("ERROR URL", e.getMessage());
+                e.printStackTrace();
+            } catch (IOException e) {
+                Log.e("ERROR IO", e.getMessage());
                 e.printStackTrace();
             }
             return bmp;
@@ -178,7 +204,7 @@ public class ItemScreen extends AppCompatActivity {
             imagenes[index]=result;
             try {
                 if (index == detalle.getJSONArray("pictures").length()-1) {//Si es el último elemento
-                    viewPagerGallery = (ViewPager) findViewById(R.id.viewPagerGallery);
+                    viewPagerGallery = findViewById(R.id.viewPagerGallery);
                     ViewPagerGalleryAdapter viewPagerGalleryAdapter = new ViewPagerGalleryAdapter(getApplicationContext());
                     viewPagerGalleryAdapter.setImages(imagenes);
                     viewPagerGallery.setAdapter(viewPagerGalleryAdapter);
@@ -187,6 +213,7 @@ public class ItemScreen extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                Log.e("ERROR JSON", e.toString());
             }
             catch (NullPointerException e){//apiResponse.getContent() falla por no poder obtener el contenido
                 Toast.makeText(ItemScreen.this,"Verifique la conexión a internet",Toast.LENGTH_SHORT).show();
@@ -221,6 +248,11 @@ public class ItemScreen extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                Log.e("ERROR JSON", e.toString());
+            } catch (NullPointerException e){
+                Log.e("ERROR INTERNET", e.toString());
+                Toast.makeText(ItemScreen.this,"Verifique la conexión a internet",Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
 

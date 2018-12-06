@@ -44,7 +44,7 @@ public class ResultScreen extends AppCompatActivity{
         setContentView(R.layout.result_screen);
 
         toSearch=getIntent().getExtras().getString("Search");
-        listResult=new ArrayList<Objeto>();
+        listResult=new ArrayList<>();
         try {
             new GetAsycTask().execute(new Command() {
                 @Override
@@ -53,7 +53,7 @@ public class ResultScreen extends AppCompatActivity{
                 }
             });
         } catch (MeliException e) {
-            Log.e("RESPONSE MELI",e.toString());
+            Log.e("ERROR MELI",e.toString());
         }
     }
 
@@ -65,6 +65,7 @@ public class ResultScreen extends AppCompatActivity{
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e("ERROR JSON",e.toString());
         }
     }
 
@@ -79,11 +80,13 @@ public class ResultScreen extends AppCompatActivity{
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e("ERROR JSON",e.toString());
         } catch (NullPointerException e){
+            Log.e("ERROR INTERNET",e.toString());
             Toast.makeText(ResultScreen.this,"Verifique la conexión a internet",Toast.LENGTH_SHORT).show();
             finish();
         }
-        recycler=(RecyclerView)findViewById(R.id.recyclerId);
+        recycler=findViewById(R.id.recyclerId);
         recycler.setHasFixedSize(true);
         linearLayoutManager=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         recycler.setLayoutManager(linearLayoutManager);
@@ -121,7 +124,7 @@ public class ResultScreen extends AppCompatActivity{
                             }
                         });
                     } catch (MeliException e) {
-                        Log.e("RESPONSE MELI",e.toString());
+                        Log.e("ERROR MELI",e.toString());
                         Toast.makeText(ResultScreen.this,"Hubo un error, intente nuevamente por favor",Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -141,7 +144,7 @@ public class ResultScreen extends AppCompatActivity{
         @Override
         protected void onPostExecute(ApiResponse apiResponse) {
             findViewById(R.id.pg_loading).setVisibility(View.GONE);
-                JSONObject reader=null;
+                JSONObject reader;
                 try {
                     reader = new JSONObject(apiResponse.getContent());
                     JSONArray resultado = reader.getJSONArray("results");
@@ -153,7 +156,9 @@ public class ResultScreen extends AppCompatActivity{
                     offsetMeLi += limitMeLi;
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e("ERROR JSON",e.toString());
                 } catch (NullPointerException e){//apiResponse.getContent() falla por no poder obtener el contenido
+                    Log.e("ERROR INTERNET",e.toString());
                     Toast.makeText(ResultScreen.this,"Verifique la conexión a internet",Toast.LENGTH_SHORT).show();
                     finish();
                 }
