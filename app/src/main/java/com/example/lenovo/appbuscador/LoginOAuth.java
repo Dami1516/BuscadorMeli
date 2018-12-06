@@ -5,22 +5,30 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.mercadolibre.android.sdk.Meli;
 
 import java.util.Date;
 
-public class LoginOAuth extends AppCompatActivity {
+public class LoginOAuth extends AppCompatActivity{
 
 
     // Request code used to receive callbacks from the SDK
     private static final int REQUEST_CODE = 999;
 
+    private Button botonVolver;
+    private int num=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.login_screen);
+
+
         if(savedInstanceState == null) {
             Meli.startLogin(this, REQUEST_CODE);
         }
@@ -44,11 +52,11 @@ public class LoginOAuth extends AppCompatActivity {
     private void processLoginProcessCompleted() {
         SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
         SharedPreferences.Editor myEditor = myPreferences.edit();
-        myEditor.putString("AccessToken", Meli.getCurrentIdentity(getBaseContext()).getAccessToken().getAccessTokenValue());
+        myEditor.putString("AccessToken", Meli.getCurrentIdentity(getApplicationContext()).getAccessToken().getAccessTokenValue());
         Date now = new Date();
-        long ut3 = (now.getTime() / 1000L) + Meli.getCurrentIdentity(getBaseContext()).getAccessToken().getAccessTokenLifetime();
+        long ut3 = (now.getTime() / 1000L) + Meli.getCurrentIdentity(getApplicationContext()).getAccessToken().getAccessTokenLifetime();
         myEditor.putLong("ValidTo", ut3);
-        myEditor.commit();
+        myEditor.apply();
     }
 
 

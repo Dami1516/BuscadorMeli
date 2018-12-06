@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +40,7 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
 
     private void setupUi() {
 
-        Button btnSearch = (Button) findViewById(R.id.btn_search);
+        Button btnSearch = findViewById(R.id.btn_search);
         btnSearch.setOnClickListener(this);
 
         if (!esValidoAC())
