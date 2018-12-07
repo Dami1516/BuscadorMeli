@@ -64,7 +64,7 @@ public class ResultScreen extends AppCompatActivity{
         }
     }
 
-    public void agregarResultados(JSONArray resultados){
+    protected void agregarResultados(JSONArray resultados){
         try {
             for (int i=0;i<resultados.length();i++) {
                 JSONObject objeto = resultados.getJSONObject(i);
@@ -76,7 +76,7 @@ public class ResultScreen extends AppCompatActivity{
         }
     }
 
-    public void setearResultados(JSONArray resultados){
+    protected void setearResultados(JSONArray resultados){
         String title="Resultados para <b>"+toSearch+"</b>";
         TextView tvTitle=findViewById(R.id.tituloResult);
         tvTitle.setText(Html.fromHtml(title));

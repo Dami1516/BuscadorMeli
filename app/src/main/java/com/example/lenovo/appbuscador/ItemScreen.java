@@ -91,6 +91,8 @@ public class ItemScreen extends AppCompatActivity {
                 tr=false;
             }
         } catch (JSONException e) {
+            //El access token es válido
+        } catch (NullPointerException e){
             e.printStackTrace();
             Log.e("ERROR JSON", e.toString());
         }

@@ -48,7 +48,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         return listResult.size();
     }
 
-    public class ViewHolderResult extends RecyclerView.ViewHolder implements View.OnClickListener{
+    protected class ViewHolderResult extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView resultId;
         TextView price;
@@ -56,7 +56,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         Button verMasButton;
         private WeakReference<ClickListener> listenerRef;
 
-        public ViewHolderResult(@NonNull View itemView, ClickListener listener) {
+        protected ViewHolderResult(@NonNull View itemView, ClickListener listener) {
             super(itemView);
             listenerRef = new WeakReference<>(listener);
             resultId=itemView.findViewById(R.id.idResult);
@@ -67,7 +67,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             verMasButton.setOnClickListener(this);
         }
 
-        public void asignarDatos(Objeto o) {
+        protected void asignarDatos(Objeto o) {
             resultId.setText(o.getTitle());
             price.setText("$ "+o.getPrice());
             DownloadImageTask task = new DownloadImageTask(thumbnail);
