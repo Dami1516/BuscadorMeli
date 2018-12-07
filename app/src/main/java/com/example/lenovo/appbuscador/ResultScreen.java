@@ -42,8 +42,7 @@ public class ResultScreen extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.result_screen);
-
-        toSearch=getIntent().getExtras().getString("Search");
+        getSearch(savedInstanceState);
         listResult=new ArrayList<>();
         try {
             new GetAsycTask().execute(new Command() {
@@ -54,6 +53,14 @@ public class ResultScreen extends AppCompatActivity{
             });
         } catch (MeliException e) {
             Log.e("ERROR MELI",e.toString());
+        }
+    }
+
+    protected void getSearch(Bundle savedInstanceState){
+        toSearch=getIntent().getExtras().getString("Search");
+        if (toSearch==null || toSearch.equals("")) {
+            Toast.makeText(this, "El campo de busqueda no puede estar vacio", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -148,6 +155,10 @@ public class ResultScreen extends AppCompatActivity{
                 try {
                     reader = new JSONObject(apiResponse.getContent());
                     JSONArray resultado = reader.getJSONArray("results");
+                    if (resultado.length()==0) {//La busqueda no arrojo resultados
+                        Toast.makeText(getApplicationContext(), "La busqueda no arrojo resultados", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
                     if (offsetMeLi == 0){
                         setearResultados(resultado);
                     }

@@ -1,5 +1,6 @@
 package com.example.lenovo.appbuscador;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ public class LoginOAuth extends AppCompatActivity{
 
     // Request code used to receive callbacks from the SDK
     private static final int REQUEST_CODE = 999;
+    private static final String ACCESS_TOKEN_KEY = "ACCESS_TOKEN_KEY";
+    private static final String EXPIRES_IN_KEY = "EXPIRES_IN_KEY";
 
     private Button botonVolver;
     private int num=0;
@@ -27,11 +30,17 @@ public class LoginOAuth extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
-
+        borrarAccessToken(); //Entro a esta clase solo si se vencio el tiempo de expiracion o si nunca me loguie.
 
         if(savedInstanceState == null) {
             Meli.startLogin(this, REQUEST_CODE);
         }
+    }
+
+    private void borrarAccessToken(){
+        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(getApplicationContext().getPackageName() + ".access_token", Context.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.apply();
     }
 
     @Override

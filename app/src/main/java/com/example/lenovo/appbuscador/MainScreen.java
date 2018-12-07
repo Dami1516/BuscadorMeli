@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.mercadolibre.android.sdk.Identity;
 import com.mercadolibre.android.sdk.Meli;
@@ -40,13 +42,19 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
 
     private void setupUi() {
 
+        EditText toSearch = findViewById(R.id.textBusqueda);
+
         Button btnSearch = findViewById(R.id.btn_search);
         btnSearch.setOnClickListener(this);
 
-        if (!esValidoAC())
-            btnSearch.setText("Primero debe loguearse");
-        else
+        if (!esValidoAC()) {
+            btnSearch.setText("Primero debe loguearse\nhaga click aquí");
+            toSearch.setEnabled(false);
+        }
+        else {
             btnSearch.setText("Buscar");
+            toSearch.setEnabled(true);
+        }
     }
 
     private boolean esValidoAC(){
@@ -64,20 +72,24 @@ public class MainScreen extends AppCompatActivity implements View.OnClickListene
             startActivity(intentLogin);
         }
         else {
-            Intent intent = new Intent(this, ResultScreen.class);
             EditText toSearch = findViewById(R.id.textBusqueda);
-            intent.putExtra("Search", toSearch.getText().toString());
-            startActivity(intent);
+            if (chequearCampoTextoVacio(toSearch)) {
+                Intent intent = new Intent(this, ResultScreen.class);
+                intent.putExtra("Search", toSearch.getText().toString());
+                startActivity(intent);
+            }
         }
     }
 
-
-    private String getUserID() {
-        Identity identity = Meli.getCurrentIdentity(getApplicationContext());
-        if (identity == null) {
-            return null;
-        } else {
-            return identity.getUserId();
+    protected boolean chequearCampoTextoVacio(EditText editText){
+        boolean tr=true;
+        if (editText.getText().toString().equals("")){
+            tr=false;
+            Toast.makeText(this,"El campo de busqueda no puede estar vacio",Toast.LENGTH_SHORT).show();
+            Log.e("ERROR BUSQUEDA","Campo de busqueda vacio");
         }
+        return tr;
     }
+
+
 }
